@@ -1,0 +1,46 @@
+
+.about-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .about-heading {
+    margin-bottom: 1rem;
+  }
+  
+  .about-content {
+    display: flex;
+    align-items: center;
+    max-width: 800px;
+    margin-top: 2rem;
+  }
+  
+  .about-image-container {
+    flex: 1;
+    text-align: left;
+    margin-left: 12rem;
+  }
+  
+  .about-image {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin-top: 13rem;
+  }
+  
+  .about-text {
+    flex: 1;
+    text-align: left;
+    margin-right: 22rem;
+    margin-top: 5rem;
+  }
+  
+  .about-caption {
+    font-size: 20px;
+    line-height: 1;
+    margin-left: 2rem; 
+  }
+  

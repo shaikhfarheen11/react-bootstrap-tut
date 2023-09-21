@@ -1,0 +1,9 @@
+.form-control.custom-input{
+    width: 360px;
+    border-color: black;
+}
+
+.btn.btn-primary{
+    padding: 0.6rem 2rem;
+    font-size: 1rem;
+}

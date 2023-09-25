@@ -39,11 +39,19 @@ const ProductScreen = () => {
   const location = useLocation();
   const { cartElements, addToCart, setCartElements, removeFromCart } = useCart();
   const [isCartOpen, setCartOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const isStorePage = location.pathname === '/store';
 
   const toggleCartPreview = () => {
     setCartOpen(!isCartOpen);
+  };
+  const selectProduct = (product) => {
+    setSelectedProduct(product); // Set the selected product when a user clicks on it
+  };
+
+  const closeProductInfo = () => {
+    setSelectedProduct(null); // Close the product info modal
   };
 
   return (
@@ -80,7 +88,13 @@ const ProductScreen = () => {
             {productsArr.map((product, index) => (
               <div key={index} className="mb-4">
                 <div className="card border-0">
-                  <h6 className={`card-subtitle mb-2 product-title`}>{product.title}</h6>
+                  <h6 className={`card-subtitle mb-2 product-title`}
+                  onClick={() => selectProduct(product)} 
+                  >
+                    {product.title}
+                    <Link to={`/product/${index}`}>{product.title}</Link> 
+                  </h6>
+
 
                   <img
                     src={product.imageUrl}
@@ -114,6 +128,18 @@ const ProductScreen = () => {
             >
               See the Cart
             </Button>
+          </div>
+        </div>
+      )}
+      {selectedProduct && (
+        <div className="product-info-modal">
+          <div className="product-info-content">
+            <button className="close-button" onClick={closeProductInfo}>
+              &times;
+            </button>
+            <h2>{selectedProduct.title}</h2>
+            <img src={selectedProduct.imageUrl} alt={selectedProduct.title} />
+         
           </div>
         </div>
       )}

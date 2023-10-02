@@ -18,12 +18,14 @@ const enteredEmail = emailInputRef.current.value;
 const enteredPassword = passwordInputRef.current.value;
   
 setIsLoading(true);
+let url;
   if(isLogin) {  
+    url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY';
 
-  } else {
-      fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY',
-        {
+} else {
+  url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY'
+}
+      fetch(url,  {
           method: 'POST',
           body: JSON.stringify({
             email: enteredEmail,
@@ -33,22 +35,28 @@ setIsLoading(true);
           headers:  {
             'Content-Type': 'application/json',
           },
-        }
-      ).then((res) => {
+        }).then((res) => {
         setIsLoading(false);
         if (res.ok) {
-
+            return res.json();
         } else {
           return res.json().then((data) => {
             let errorMessage = 'Authentication failed!';
-            
-            alert(errorMessage);
+          
+            throw new Error(errorMessage);
           });
         }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => { 
+        alert(err.message);
+
       });
       
-}
-};
+    
+  };
 
   return (
     <section className={classes.auth}>

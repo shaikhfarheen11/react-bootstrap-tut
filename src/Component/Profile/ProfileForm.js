@@ -21,7 +21,7 @@ const authCtx =  useContext(AuthContext);
       }),
       headers: {
         'Content-Type': 'application/json',
-        
+       
       }
     }).then(res => {
       

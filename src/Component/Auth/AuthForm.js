@@ -1,15 +1,12 @@
-import { useState, useRef, useContext } from 'react';
- 
-
+import { useState, useRef, useContext, useEffect } from 'react';
 import classes from './AuthForm.module.css';
 import AuthContext from '../../store/auth-context';
 
 const AuthForm = () => {
-
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
- const authCtx = useContext(AuthContext);
+  const authCtx = useContext(AuthContext);
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,67 +14,87 @@ const AuthForm = () => {
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
-const submitHandler = (event) => {
-  event.preventDefault();
 
-  const enteredEmail = emailInputRef.current.value;
-  const enteredPassword = passwordInputRef.current.value;
+  const calculateRemainingTime = (expirationTime) => {
+    const currentTime = new Date().getTime();
+    const adjustedExpirationTime = parseInt(expirationTime) - currentTime;
+    return adjustedExpirationTime;
+  };
 
-  setIsLoading(true);
-  let url;
-  if (isLogin) {
-    url = 
-    'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY';
-} else {
-  url = 
-  'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY';
-}
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({
-        email: enteredEmail,
-        password: enteredPassword,
-        returnSecureToken: true,
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedExpirationTime = localStorage.getItem('expirationTime');
 
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    
+    if (storedToken && storedExpirationTime) {
+      const remainingTime = calculateRemainingTime(storedExpirationTime);
 
-    }).then((res) => {
-      setIsLoading(false);
-      if (res.ok) {
-          return res.json();
+      if (remainingTime <= 0) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('expirationTime');
+        authCtx.logout();
+        alert('Your session has expired. Please log in again.');
       } else {
-        return res.json().then((data) => {
-        let errorMessage = 'Authentication failed!';
-        // if (data && data.error && data.error.message){
-        //   errorMessage = data.error.message;
-
-        // }
-       
-        throw new Error(errorMessage);
-
-        });
+        setTimeout(() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('expirationTime');
+          authCtx.logout();
+          alert('Your session has expired. Please log in again.');
+        }, remainingTime);
       }
-    })
-    .then((data) => {
+    }
+  }, [authCtx]);
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value;
+
+    setIsLoading(true);
+    let url;
+    if (isLogin) {
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY';
+    } else {
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY';
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          returnSecureToken: true,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Authentication failed!');
+      }
+
+      const data = await response.json();
       authCtx.login(data.idToken);
-  
 
-    })
-    .catch((err) => {
-      alert(err.message);
+      const expirationTime = new Date().getTime() + 300000; 
 
-    });
+      localStorage.setItem('token', data.idToken);
+      localStorage.setItem('expirationTime', expirationTime.toString());
+
+      setIsLoading(false);
+    } catch (error) {
+      alert(error.message);
+      setIsLoading(false);
+    }
   };
 
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
       <form onSubmit={submitHandler}>
-        <div className={classes.control}>
+      <div className={classes.control}>
           <label htmlFor='email'>Your Email</label>
           <input type='email' id='email' required ref={emailInputRef} />
         </div>

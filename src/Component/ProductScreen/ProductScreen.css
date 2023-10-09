@@ -6,15 +6,11 @@
   margin-left: 12rem;
 }
 
-
 .card-img-top.smaller-image {
   max-width: 320px;
   margin-top: 4rem;
   
-
 }
-
-
 .product-title {
   font-size: 1.2rem;
   margin-bottom: 50px; 
@@ -38,6 +34,7 @@
   font-size: 1.2rem;
   margin-bottom: 2rempx !important;
 } */
+
 .cart-badge {
   position: absolute;
   top: 5px;
@@ -95,7 +92,7 @@
  
 }
 .navbar .mx-auto .nav-link {
-  margin-right: 4rem; 
+  margin-right: 3.5rem; 
 
 }
 .generics-section {

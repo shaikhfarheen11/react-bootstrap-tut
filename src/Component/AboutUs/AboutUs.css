@@ -21,7 +21,7 @@
   .about-image-container {
     flex: 1;
     text-align: left;
-    margin-left: 12rem;
+    margin-left: 15rem;
   }
   
   .about-image {
@@ -41,6 +41,7 @@
   .about-caption {
     font-size: 20px;
     line-height: 1;
+    font-family:Georgia, 'Times New Roman', Times, serif;
     margin-left: 2rem; 
   }
   

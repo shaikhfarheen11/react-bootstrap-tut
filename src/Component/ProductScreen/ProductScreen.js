@@ -47,11 +47,11 @@ const ProductScreen = () => {
     setCartOpen(!isCartOpen);
   };
   const selectProduct = (product) => {
-    setSelectedProduct(product); // Set the selected product when a user clicks on it
+    setSelectedProduct(product); 
   };
 
   const closeProductInfo = () => {
-    setSelectedProduct(null); // Close the product info modal
+    setSelectedProduct(null); 
   };
 
   return (
@@ -63,6 +63,7 @@ const ProductScreen = () => {
             <Nav.Link as={Link} to="/home">HOME</Nav.Link>
             <Nav.Link as={Link} to="/store">STORE</Nav.Link>
             <Nav.Link as={Link} to="/about">ABOUT</Nav.Link>
+            <Nav.Link as={Link} to="/login">LOGIN</Nav.Link>
           </Nav>
         </Navbar.Collapse>
         {isStorePage ? (

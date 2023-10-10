@@ -1,7 +1,7 @@
 import { useState, useRef, useContext, useEffect } from 'react';
 import classes from './AuthForm.module.css';
-import AuthContext from '../../store/auth-context';
-
+import { AuthContext } from '../../store/auth-context';
+import { Navigate } from 'react-router-dom';
 const AuthForm = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -10,6 +10,7 @@ const AuthForm = () => {
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -89,6 +90,10 @@ const AuthForm = () => {
       setIsLoading(false);
     }
   };
+  if (authCtx.isLoggedIn) {
+    return <Navigate to="/store" replace={true} />;
+  }
+
 
   return (
     <section className={classes.auth}>

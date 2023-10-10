@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Navigate } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 
 import ProductScreen from './Component/ProductScreen/ProductScreen';
@@ -11,6 +11,7 @@ import Layout from './Component/Layout/Layout';
 import ContactUs from './Component/ContactUs';
 import ProductDetails from './Component/ProductScreen/ProductDetails';
 import AuthForm from './Component/Auth/AuthForm';
+import { AuthContext } from './store/auth-context';
 
   const productsArr = [
     {
@@ -38,29 +39,39 @@ import AuthForm from './Component/Auth/AuthForm';
       quantity: 4,
     },
   ];
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <CartProvider>
-          <Router>
-            <Layout>
-              <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/store" element={<ProductScreen />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/contact-us" element={<ContactUs />} />
-                <Route path="/product/:id" element={<ProductDetails productsArr={productsArr}/>} />
-                <Route path="/login" element={<AuthForm />} />
-              
-              </Routes>
-             
-           
-            </Layout>
-          </Router>
-        </CartProvider>
-      </header>
-    </div>
-  );
-}
-export default App;
+  function App() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <CartProvider>
+            <Router>
+              <Layout>
+                <Routes>
+                  <Route path="/home" element={<PrivateRoute> <Home /> </PrivateRoute>} />
+                  <Route path="/about" element={<PrivateRoute> <AboutUs /> </PrivateRoute>} />
+                  <Route path="/contact-us" element={<PrivateRoute> <ContactUs /> </PrivateRoute>} />
+                  <Route path="/login" element={<AuthForm />} />
+                  <Route
+                    path="/store/*"
+                    element={
+                      <PrivateRoute>
+                        <ProductScreen />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route path="/product/:id" element={<ProductDetails productsArr={productsArr} />} />
+                </Routes>
+              </Layout>
+            </Router>
+          </CartProvider>
+        </header>
+      </div>
+    );
+  }
+  
+  export default App;
+  
+  function PrivateRoute({ children }) {
+    const authCtx = React.useContext(AuthContext);
+    return authCtx.isLoggedIn ? children : <Navigate to="/login" />;
+  }

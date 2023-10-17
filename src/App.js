@@ -13,6 +13,7 @@ import ProductDetails from './Component/ProductScreen/ProductDetails';
 import AuthForm from './Component/Auth/AuthForm';
 import { AuthContext } from './store/auth-context';
 
+
   const productsArr = [
     {
       title: 'Album 1',
@@ -38,6 +39,7 @@ import { AuthContext } from './store/auth-context';
       imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%204.png',
       quantity: 4,
     },
+
   ];
   function App() {
     return (

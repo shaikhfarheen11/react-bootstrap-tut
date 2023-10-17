@@ -7,6 +7,10 @@ import Cart from '../Cart/Cart';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useCart } from '../Cart/CartContext';
 import { Link, useLocation } from 'react-router-dom';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faYoutube, faSpotify, faFacebook } from '@fortawesome/free-brands-svg-icons';
+
 
 const productsArr = [
   {
@@ -34,6 +38,7 @@ const productsArr = [
     quantity: 4,
   },
 ];
+library.add(faYoutube, faSpotify, faFacebook);
 
 const ProductScreen = () => {
   const location = useLocation();
@@ -42,6 +47,33 @@ const ProductScreen = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const isStorePage = location.pathname === '/store';
+
+  const addToCartAndStore = (product) => {
+    addToCart(product);
+
+    const userEmailid = 'user@example.com'; 
+    const itemToAdd = { ...product, user: userEmailid };
+
+    fetch(`https://crudcrud.com/api/4beb4de24d074762a5c4a213142b7a64/cart/${userEmailid}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(itemToAdd),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to add item to the cart');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        cartElements(data);
+      })
+      .catch((error) => {
+        console.error('Error adding item to the cart:', error);
+      });
+  };
 
   const toggleCartPreview = () => {
     setCartOpen(!isCartOpen);
@@ -95,8 +127,6 @@ const ProductScreen = () => {
                     {product.title}
                     <Link to={`/product/${index}`}>{product.title}</Link> 
                   </h6>
-
-
                   <img
                     src={product.imageUrl}
                     alt={product.title}
@@ -106,7 +136,7 @@ const ProductScreen = () => {
                     <p className="card-text">${product.price}</p>
                     <Button
                       className="custom-add-to-cart-button"
-                      onClick={() => addToCart(product)}
+                      onClick={() => addToCartAndStore(product)}
                     >
                       ADD TO CART
                     </Button>
@@ -151,6 +181,22 @@ const ProductScreen = () => {
         removeFromCart={removeFromCart}
         setCartItems={setCartElements}
       />
+         {isStorePage && (
+  <div className="the-generics">
+    <h2 className="generics-tit">The Generics</h2>
+    <div className="social-icons">
+      <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+        <FontAwesomeIcon icon={['fab', 'youtube']} /> 
+      </a>
+      <a href="https://spotify.com" target="_blank" rel="noopener noreferrer">
+        <FontAwesomeIcon icon={['fab', 'spotify']} /> 
+      </a>
+      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+        <FontAwesomeIcon icon={['fab', 'facebook']} /> 
+      </a>
+    </div>
+  </div>
+)}
     </Container>
   );
 };

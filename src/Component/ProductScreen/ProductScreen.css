@@ -168,3 +168,28 @@ background-color: grey;
   margin-bottom: 7rem;
   
 }
+.the-generics {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -65rem;
+  height: 8rem;
+  background-color: #56CCF2;
+  font-size: 8rem;
+  overflow: hidden;
+  color: white;
+  text-align: center;
+}
+
+ 
+
+.generics-tit {
+  font-size: 4rem;
+  text-align: left;
+  margin-left: 14rem;
+  margin-top: 1.4rem;
+  font-weight: 600;
+  font-family: 'Times New Roman', Times, serif;
+  color: white;
+}
+

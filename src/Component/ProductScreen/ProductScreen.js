@@ -37,7 +37,19 @@ const productsArr = [
     imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%204.png',
     quantity: 4,
   },
-];
+  {
+    title: 'Album 5',
+    price: 19.99,
+    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Shirt.png',
+    quantity: 3,
+  },
+  {
+    title: 'Album 6',
+    price: 6.99,
+    imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Cofee.png',
+    quantity: 5,
+  },
+]
 library.add(faYoutube, faSpotify, faFacebook);
 
 const ProductScreen = () => {

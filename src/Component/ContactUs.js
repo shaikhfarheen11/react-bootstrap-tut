@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, push } from 'firebase/database';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './ContactUs.css';
-
+import classes from './ContactUs.module.css';
 
 const firebaseConfig = {
   databaseURL: 'https://react-hp-325a3-default-rtdb.firebaseio.com/',
@@ -49,16 +48,16 @@ function ContactUs() {
   };
 
   return (
-    <div className="contact-us">
-      <h2>Contact Us</h2>
+    <div className={classes['contact-us']}>
+      <h2 className={classes.contact}>Contact Us</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
+        <div className={classes['mb-3']}>
+          <label htmlFor="name" className={classes['form-label']}>
             Name:
           </label>
           <input
             type="text"
-            className="form-control custom-input"
+            className={classes['form-control']}
             id="name"
             name="name"
             value={formData.name}
@@ -66,13 +65,13 @@ function ContactUs() {
             required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
+        <div className={classes['mb-3']}>
+          <label htmlFor="email" className={classes['form-label']}>
             Email:
           </label>
           <input
             type="email"
-            className="form-control custom-input"
+            className={classes['form-control']}
             id="email"
             name="email"
             value={formData.email}
@@ -80,13 +79,13 @@ function ContactUs() {
             required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="phoneNumber" className="form-label">
-            Phone Number:
+        <div className={classes['mb-3']}>
+          <label htmlFor="phoneNumber" className={classes['form-label']}>
+         Phone Number:
           </label>
           <input
             type="tel"
-            className="form-control custom-input"
+            className={classes['form-control']}
             id="phoneNumber"
             name="phoneNumber"
             value={formData.phoneNumber}
@@ -94,7 +93,7 @@ function ContactUs() {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className={classes['btn-primary']}>
           Submit
         </button>
       </form>

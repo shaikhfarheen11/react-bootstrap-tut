@@ -3,12 +3,10 @@ import { Nav, Navbar } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 
 
-// import { AiOutlineShoppingCart } from 'react-icons/ai';
-import './Layout.css';
-
 function Layout({ children }) {
   
   const location = useLocation();
+
 
   const isAboutPage = location.pathname === '/about';
   const isStorePage = location.pathname === '/store';
@@ -23,7 +21,9 @@ function Layout({ children }) {
             <Nav.Link as={Link} to="/store">STORE</Nav.Link>
             <Nav.Link as={Link} to="/about">ABOUT</Nav.Link>
             <Nav.Link as={Link} to="/contact-us">Contact Us</Nav.Link>
-          </Nav>
+
+         
+</Nav>
         </Navbar.Collapse>
      
       </Navbar>

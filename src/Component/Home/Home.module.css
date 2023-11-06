@@ -1,27 +1,27 @@
 
-.home-button {
+.homeButton {
     background-color: grey;
     color: white;
-    font-size: 1.9rem;
+    font-size: 1.4rem !important;
     font-weight: bold;
-    padding: 1rem 2.2rem;
-    margin-top: -6rem;
+    margin-top: -10rem;
     border-color: aqua;
     
   }
-  .play-button{
-    border-radius: 9rem;
-    padding: 1.4rem;
-    width: 6rem;
-    font-size: 2.2rem;
-    color: aqua;
-    background-color: grey;
-    border-color: aqua;
-    margin-top: 1rem;
+  .roundedButton{
+    border: 3px solid aqua; 
+    border-radius: 50%; 
+    color: #fff; 
+    background-color: transparent; 
+    font-size: 1.6rem !important; 
+    padding: 1.5rem 2rem !important; 
+    cursor: pointer;
+    margin-top: -2rem;
+transition: background-color 0.3s, color 0.3s;
     
   }
   
-  .generics-sec{
+  .genericsec{
   background-color: grey;
   padding: 20px 0;
   width: 100vw;
@@ -31,14 +31,14 @@
   left: calc(-50vw + 50%);
   height: 490px;
   font-family: 'Times New Roman', Times, serif;
-  margin-top: -11.3rem; 
+  margin-top: -14.8rem; 
 }
-.generics-titlee{
+.genericsTitlee{
     font-size: 8rem;
     text-align: center;
     color: white;
     font-weight: 800;
-    margin-top: -1.5rem;
+    margin-top: -1.2rem;
     margin-bottom: 7rem;
     
 
@@ -51,16 +51,16 @@
 
 }
 
-.tour-table{
+.tourTable{
     margin-left: 350px;
     margin-top: 3rem;
     font-size: 1.3rem;
 }
 
-.tour-table td {
+.tourTable td {
     padding: 12px 40px; 
   }
-  .tour-table tr {
+  .tourTable tr {
     border-bottom: 1px solid #050404; 
   }
   .buy_tickets{
@@ -70,14 +70,14 @@
     font-weight: 200;
     font-size: 18px;
   }
-  .generics-bottom{
+  .genericsBottom{
     margin-top: 5rem;
     height: 9rem;
     background-color: #56CCF2;
     font-size: 8rem;
     
   }
-  .generics-bt{
+  .genericsBt{
     font-size: 4rem;
     text-align: left;
     margin-left: 18rem;

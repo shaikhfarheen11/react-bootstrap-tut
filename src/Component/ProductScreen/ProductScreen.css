@@ -3,8 +3,9 @@
   grid-template-columns: repeat(2, 1fr);
   column-gap: 0.0rem;
   justify-content: space-between;
-  margin-left: 12rem;
+  margin-left: 11rem;
 }
+
 
 .card-img-top.smaller-image {
   max-width: 320px;
@@ -13,7 +14,10 @@
 }
 .product-title {
   font-size: 1.2rem;
-  margin-bottom: 50px; 
+
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 1.7rem !important; 
+
 }
 
 .card-subtitle.mb-2 {
@@ -29,12 +33,6 @@
   padding: 0;
  
 }
-
-/* .product-title {
-  font-size: 1.2rem;
-  margin-bottom: 2rempx !important;
-} */
-
 .cart-badge {
   position: absolute;
   top: 5px;
@@ -80,20 +78,34 @@
   height: 50px; 
   background-color: black;
   font-family:'Times New Roman', Times, serif;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  display: flex;
  
  
 }
 .navbar .nav-link {
   color: white; 
-  margin-right: 50px;
+  margin-right: 4rem !important;
   border: #fff;
+  margin-left: -0.9rem;
   
  
 }
 .navbar .mx-auto .nav-link {
   margin-right: 3.5rem; 
 
+}
+
+.image-zoom:hover {
+  transform: scale(1.2);
+  transition: transform 0.6s ease-in-out;
+}
+
+.logout-nav{
+  font-size: 1.3rem !important;
+  margin-top: 0.5rem;
+  border: 3px solid #fff !important;
+  border-radius: 1rem;
 }
 .generics-section {
   background-color: grey;
@@ -103,9 +115,9 @@
   margin-bottom: 4rem;
   position: relative;
   left: calc(-50vw + 50%);
-  height: 14rem;
+  height: 15rem;
   font-family: 'Times New Roman', Times, serif;
-  margin-top: 3.2rem; 
+  margin-top: 3.3rem; 
 }
 
 .music-title {
@@ -115,7 +127,13 @@
   font-weight: 900;
   margin-top: -1rem !important; 
 }
-
+.merch-title{
+font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: 900;
+  margin-top: 3.5rem !important; 
+}
 
 .generics-title {
   font-size: 8rem;
@@ -172,7 +190,7 @@ background-color: grey;
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -100rem;
+  bottom: -117rem;
   height: 8rem;
   background-color: #56CCF2;
   font-size: 8rem;
@@ -187,9 +205,36 @@ background-color: grey;
   font-size: 4rem;
   text-align: left;
   margin-left: 14rem;
-  margin-top: 1.4rem;
+  margin-top: -5rem;
   font-weight: 600;
   font-family: 'Times New Roman', Times, serif;
   color: white;
 }
+.social-icons{
+margin-left: 60rem;
+font-size: 3rem;
+margin-top: 1.2rem;
 
+
+}
+.facebook-icon{
+  margin-right: -1rem;
+  color: rgb(72, 72, 172);
+  cursor: pointer;
+}
+.youtube-icon{
+  margin-right: 6rem;
+  color: rgb(192, 22, 22);
+  cursor: pointer;
+  
+}
+.youtube-icon:hover,
+  .spotify-icon:hover,
+  .facebook-icon:hover{
+background-color:#ccc;
+}
+.spotify-icon{
+  margin-right: 6rem;
+  color: rgb(48, 196, 122);
+  cursor: pointer;
+}

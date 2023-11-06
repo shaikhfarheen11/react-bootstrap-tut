@@ -3,11 +3,22 @@
   width: 95%;
   max-width: 25rem;
   border-radius: 6px;
-  background-color: #38015c;
+  background-color: #054550;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   padding: 1rem;
   text-align: center;
   color: white;
+}
+button {
+  background-color: #378ca1;
+  color: #fff;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-left: 10px;
 }
 
 .auth h1 {
@@ -27,7 +38,7 @@
 }
 
 .control input {
-  font: inherit;
+  /* font: inherit; */
   background-color: #f1e1fc;
   color: #38015c;
   border-radius: 4px;
@@ -48,26 +59,26 @@
   cursor: pointer;
   font: inherit;
   color: white;
-  background-color: #9f5ccc;
+  background-color: #482c6d;
   border: 1px solid #9f5ccc;
   border-radius: 4px;
   padding: 0.2rem 2.5rem;
 }
 
 .actions button:hover {
-  background-color: #873abb;
+  background-color: #8e49bd;
   border-color: #873abb;
 }
 
 .actions .toggle {
   margin-top: 1rem;
   background-color: transparent;
-  color: #9f5ccc;
+  color: #ffffff;
   border: none;
   padding: 0.10rem 1rem;
 }
 
 .actions .toggle:hover {
   background-color: transparent;
-  color: #ae82cc;
+  color: #300c2d;
 }

@@ -11,9 +11,12 @@ const Cart = ({ isOpen, toggleCart }) => {
     return cartElements.reduce((total, item) => total + item.price * item.quantity, 0);
   };
   const handleQuantityChange = (index, newQuantity) => {
+    if (newQuantity >= 0) {
+
     const updatedCart = [...cartElements];
     updatedCart[index].quantity = newQuantity;
     setCartElements(updatedCart);
+    }
   };
 
   return (

@@ -1,44 +1,34 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext();
 
-export const useCart = () => useContext(CartContext);
+export const CartProvider = ({ children }) => {
+  const [cartItems, setCartItems] = useState([]);
 
-export function CartProvider({ children }) {
-  const [cartElements, setCartElements] = useState([]);
-
-  useEffect(() => {
-    const storedCartData = localStorage.getItem('cartData');
-    if (storedCartData) {
-      setCartElements(JSON.parse(storedCartData));
-    }
-
-  }, []);
-  useEffect(() => {
-    localStorage.setItem('cartData', JSON.stringify(cartElements));
-  }, [cartElements]);
-
-
-  const addToCart = (product) => {
-    const existingCartItemIndex = cartElements.findIndex((item) => item.title === product.title);
-
-    if (existingCartItemIndex !== -1) {
-      const updatedCart = [...cartElements];
-      updatedCart[existingCartItemIndex].quantity += 1;
-      setCartElements(updatedCart);
-    } else {
-      setCartElements([...cartElements, { ...product, quantity: 1 }]);
-    }
+  const addToCart = (item) => {
+    setCartItems([...cartItems, item]);
   };
 
-  const removeFromCart = (index) => {
-    const updatedCart = cartElements.filter((_, i) => i !== index);
-    setCartElements(updatedCart);
+  const updateQuantity = (index, quantity) => {
+    const updatedCart = [...cartItems];
+    updatedCart[index].quantity = quantity;
+    setCartItems(updatedCart);
+  };
+
+  const removeItem = (index) => {
+    const updatedCart = cartItems.filter((_, i) => i !== index);
+    setCartItems(updatedCart);
+  };
+
+  const calculateTotalAmount = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   return (
-    <CartContext.Provider value={{ cartElements, addToCart, removeFromCart, setCartElements }}>
+    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem, calculateTotalAmount }}>
       {children}
     </CartContext.Provider>
   );
-}
+};
+
+export const useCart = () => useContext(CartContext);

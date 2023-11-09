@@ -1,0 +1,64 @@
+.cart-badge {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #f00;
+    color: #fff;
+    border: none;
+    font-size: 1.5rem;
+    padding: 16px 20px;
+    cursor: pointer;
+    border-radius: 100px;
+  }
+  
+  .product-control {
+    color: white;
+    margin-left: 2rem;
+    margin-top: 2rem;
+   
+
+  }
+  .product-control label {
+    color: black;
+    margin-left: 2rem;
+    font-weight: bold; 
+  }
+  
+  .product-control input,
+  .product-control select {
+    border-width: 3.5rem ; 
+    padding: 8px; /* Add padding to input fields */
+    border: 2px solid black; /* Add border to input fields */
+    margin-bottom: 1rem; /* Add some margin between input fields */
+  }
+  .input-field{
+    font-size: 1.3rem;
+  }
+  
+  
+  .added-products {
+    color: white;
+  }
+  
+  .white-text {
+    color: #fff;
+  }
+  
+  /* Add the following styles for black text */
+  .product-control label,
+  .added-products li p {
+    color: black;
+    margin-left: 2rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+ 
+  }
+  
+  .submit-button {
+    padding: 8px 20px;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    background-color: rgb(105, 228, 228);
+
+  }
+  

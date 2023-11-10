@@ -1,15 +1,24 @@
 import React from 'react';
-import { CartProvider } from './Component/Cart/CartContext';
-import Product from './Component/Product/Product'; // Update the path
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Signup from './Component/Signup/Signup';
 
-function App() {
+const App = () => {
   return (
-    <CartProvider>
-      <div className="App">
-        <Product />
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/signup">Signup</Link>
+            </li>
+          </ul>
+        </nav>
+        <Routes>
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
       </div>
-    </CartProvider>
+    </Router>
   );
-}
+};
 
 export default App;

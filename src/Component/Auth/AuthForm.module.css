@@ -38,7 +38,7 @@ button {
 }
 
 .control input {
-  /* font: inherit; */
+  font: inherit;
   background-color: #f1e1fc;
   color: #38015c;
   border-radius: 4px;

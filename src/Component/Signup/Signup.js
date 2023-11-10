@@ -46,7 +46,7 @@ const Signup = () => {
       const data = await response.json();
 
      
-      console.log('Signup successful:', data);
+      console.log('User has successfully signed up:', data);
 
       navigate('/dashboard');
     } catch (error) {

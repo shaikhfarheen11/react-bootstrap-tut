@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import Signup from './Component/Signup/Signup';
+import Login from './Component/Login/Login';
+import WelcomeScreen from './Component/WelcomeScreen/WelcomeScreen';
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
       </nav>
       <Routes>
         <Route path="/signup" element={<Signup />} />
-    
+        <Route path="/login" element={<Login />} />
+        <Route path="/welcome" element={<WelcomeScreen />} />
+
       </Routes>
     </BrowserRouter>
   );

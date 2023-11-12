@@ -57,8 +57,8 @@
   
   .eyeIcon {
     position: absolute;
-    top: 53%;
-    right: 49rem; 
+    top: 47%;
+    right: 48rem; 
     transform: translateY(-50%);
      cursor: pointer;
     pointer-events: auto;

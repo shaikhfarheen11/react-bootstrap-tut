@@ -1,41 +1,139 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaGlobe } from 'react-icons/fa'; 
+import { FaGithub, FaGlobe } from 'react-icons/fa';
+import { getDatabase, ref, push, set } from 'firebase/database';
+import { initializeApp } from 'firebase/app';  
+import { getAuth } from 'firebase/auth';
+
 
 import classes from './WinningQoute.module.css';
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY",
+  databaseURL: 'https://react-hp-325a3-default-rtdb.firebaseio.com/',
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
 
 const WinningQuote = () => {
   const [fullName, setFullName] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
 
-  const handleUpdate = async () => {
-    try {
-     console.log('Payload:', JSON.stringify({ fullName, profilePhoto }));
-      const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY`;
+  useEffect(() => {
+    
+    fetchUserData();
+  }, []); 
 
-      const response = await fetch(url, {
+  const fetchUserData = async () => {
+    try {
+    
+        console.log('Before fetch');
+      const auth = getAuth(firebaseApp);
+      const user = auth.currentUser;
+  
+      if (!user) {
+        console.error('User not authenticated.');
+        return;
+      }
+  
+      const idToken = await user.getIdToken();
+  
+      const identityToolkitEndpoint = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY&idToken=${idToken}`;
+
+  
+      const identityToolkitResponse = await fetch(identityToolkitEndpoint, {
         method: 'POST',
-        body: JSON.stringify({
-          fullName: fullName,
-          profilePhoto: profilePhoto,
-         
-        }),
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          idToken: idToken,
+        }),
       });
-      
-
-      if (response.ok) {
-        console.log('User details updated successfully!');
-      
+  
+      if (identityToolkitResponse.ok) {
+        const userData = await identityToolkitResponse.json();
+        const { users } = userData;
+  
+        if (users && users.length > 0) {
+          // Assuming that users[0] contains the user's profile data
+          const { displayName, photoUrl } = users[0];
+  
+          // Pre-fill the input fields
+          setFullName(displayName || '');
+          setProfilePhoto(photoUrl || '');
+        } else {
+          console.error('No user data found');
+        }
       } else {
-        console.error('Failed to update user details');
-       
+        console.error('Failed to fetch user data from identity toolkit');
       }
+      console.log('After successful fetch');
+    } catch (error) {
+      console.error('Error occurred while fetching user data:', error);
+    }
+  };
+  
+  const handleUpdate = async () => {
+    try {
+      if (!fullName || !profilePhoto) {
+        console.log('Full name and profile photo URL are required.');
+        return;
+      }
+
+      const db = getDatabase(firebaseApp);
+      const dbRef = ref(db, 'winningQuotes');
+
+      const data = {
+        fullName: fullName,
+        profilePhoto: profilePhoto,
+      };
+
+      const newRef = push(dbRef);
+      const userKey = newRef.key;
+
+      await set(ref(db, `winningQuotes/${userKey}`), data);
+
+      console.log('User details updated in the Realtime Database successfully!');
+
+      const auth = getAuth(firebaseApp);
+      const user = auth.currentUser;
+      console.log('Current user:', user);
+
+
+      if (!user) {
+        console.error('User not authenticated.');
+        return;
+      }
+
+      const idToken = await user.getIdToken();
+
+      const identityToolkitEndpoint = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=
+      AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY`;
+
+      const identityToolkitResponse = await fetch(identityToolkitEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          displayName: fullName,
+          photoUrl: profilePhoto,
+          idToken: idToken,
+        }),
+      });
+
+      if (identityToolkitResponse.ok) {
+        console.log('Identity toolkit update successful!');
+      } else {
+        console.error('Failed to update with identity toolkit');
+      }
+
+      setFullName('');
+      setProfilePhoto('');
     } catch (error) {
       console.error('Error occurred:', error);
-   
     }
   };
 

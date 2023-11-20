@@ -23,7 +23,7 @@ export const AuthContextProvider = (props) => {
   };
 
   useEffect(() => {
-    // Auto-login user if a token exists in localStorage
+  
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       loginHandler(storedToken);

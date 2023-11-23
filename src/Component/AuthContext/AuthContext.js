@@ -1,4 +1,4 @@
-// AuthContext.js
+
 import { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
@@ -7,12 +7,10 @@ export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const login = () => {
-    // Your login logic here
     setIsLoggedIn(true);
   };
 
   const logout = () => {
-    // Your logout logic here
     setIsLoggedIn(false);
   };
 

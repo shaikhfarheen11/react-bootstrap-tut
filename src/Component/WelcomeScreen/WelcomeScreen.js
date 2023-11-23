@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classes from './Welcome.module.css';
+import ExpenseList from '../Expense/ExpenseList';
 
 
 const WelcomeScreen = () => {
+
   return (
     <div className={classes.welcomeContainer}>
     <h2>Welcome to Expense Tracker!!!</h2>
@@ -11,9 +13,11 @@ const WelcomeScreen = () => {
       <p>
         <span>Your Profile is incomplete </span>
         <span className={classes.completeNow}><Link to="/winning-qoute">Complete now</Link></span>
-      </p>
+        
+      </p>      
     </div>
       <hr />
+      <ExpenseList />
     </div>
   );
 };

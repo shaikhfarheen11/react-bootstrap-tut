@@ -6,6 +6,8 @@ import WelcomeScreen from './Component/WelcomeScreen/WelcomeScreen';
 import WinningQuote from './Component/WelcomeScreen/WinningQoute';
 import { AuthContextProvider } from './Component/AuthContext/AuthContext';
 import ForgotPassword from './Component/ForgotPassword/ForgotPassword';
+import ExpenseForm from './Component/Expense/ExpenseForm';
+import ExpenseList from './Component/Expense/ExpenseList';
 
 
 
@@ -22,8 +24,9 @@ function App() {
         <Route path="/welcome" element={<WelcomeScreen />} />
         <Route path="/winning-qoute" element={<WinningQuote/>} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/expense-form" element={<ExpenseForm />} />
+        <Route path="/expense-list" element= {<ExpenseList />} />
 
-    
 
       </Routes>
     </BrowserRouter>

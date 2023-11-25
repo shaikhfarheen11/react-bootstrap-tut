@@ -26,4 +26,18 @@
     font-weight: bold;
     font-size: 1.4rem;
   }
+  .delete{
+    background-color: rgb(108, 216, 108);
+    padding: 0.4rem 1.3rem ;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.4rem;
+  }
+  .edit{
+    background-color: rgb(108, 216, 108);
+    padding: 0.4rem 1.4rem ;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.4rem;
+  }
   

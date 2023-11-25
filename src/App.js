@@ -9,6 +9,7 @@ import ForgotPassword from './Component/ForgotPassword/ForgotPassword';
 import ExpenseForm from './Component/Expense/ExpenseForm';
 import ExpenseList from './Component/Expense/ExpenseList';
 import EmailVerification from './Component/Expense/EmailVarification';
+import ExpenseEdit from './Component/Expense/ExpenseEdit';
 
 
 
@@ -28,8 +29,7 @@ function App() {
         <Route path="/expense-form" element={<ExpenseForm />} />
         <Route path="/welcome" element= {<ExpenseList />} />
         <Route path="/varification" element={<EmailVerification/>} />
-
-
+        <Route path="/edit-expense/:id" element={<ExpenseEdit/>} />
       </Routes>
     </BrowserRouter>
     </AuthContextProvider>

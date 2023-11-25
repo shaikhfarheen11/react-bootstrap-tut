@@ -26,10 +26,10 @@ const ExpenseForm = ({ onAddExpense }) => {
       if (response.ok) {
         onAddExpense(newExpense);
 
-        setAmount('');
-        setDescription('');
-        setCategory('');
-        setSelectedCategoryStyle({});
+        // setAmount('');
+        // setDescription('');
+        // setCategory('');
+        // setSelectedCategoryStyle({});
         
         navigate('/welcome');
       } else {

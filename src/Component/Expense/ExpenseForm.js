@@ -1,17 +1,43 @@
-// ExpenseForm.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './ExpenseForm.module.css';
 
 const ExpenseForm = ({ onAddExpense }) => {
+  const navigate = useNavigate();
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [selectedCategoryStyle, setSelectedCategoryStyle] = useState({});
 
-  const handleExpenseSubmit = (event) => {
+  const handleExpenseSubmit = async (event) => {
     event.preventDefault();
+
     const newExpense = { amount, description, category };
-    onAddExpense(newExpense);
+
+    try {
+      const response = await fetch('https://react-hp-325a3-default-rtdb.firebaseio.com/expenses.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newExpense),
+      });
+
+      if (response.ok) {
+        onAddExpense(newExpense);
+
+        setAmount('');
+        setDescription('');
+        setCategory('');
+        setSelectedCategoryStyle({});
+        
+        navigate('/welcome');
+      } else {
+        console.error('Failed to add expense. Server response:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding expense:', error.message);
+    }
   };
 
   const handleCategoryChange = (e) => {
@@ -58,7 +84,7 @@ const ExpenseForm = ({ onAddExpense }) => {
             id="category"
             value={category}
             onChange={handleCategoryChange}
-            style={selectedCategoryStyle} // Apply the border style dynamically
+            style={selectedCategoryStyle}
           >
             <option value="">Select Category</option>
             <option value="food">Food</option>

@@ -8,6 +8,7 @@ import { AuthContextProvider } from './Component/AuthContext/AuthContext';
 import ForgotPassword from './Component/ForgotPassword/ForgotPassword';
 import ExpenseForm from './Component/Expense/ExpenseForm';
 import ExpenseList from './Component/Expense/ExpenseList';
+import EmailVerification from './Component/Expense/EmailVarification';
 
 
 
@@ -25,7 +26,8 @@ function App() {
         <Route path="/winning-qoute" element={<WinningQuote/>} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/expense-form" element={<ExpenseForm />} />
-        <Route path="/expense-list" element= {<ExpenseList />} />
+        <Route path="/welcome" element= {<ExpenseList />} />
+        <Route path="/varification" element={<EmailVerification/>} />
 
 
       </Routes>

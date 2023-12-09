@@ -4,12 +4,16 @@ import { Link } from 'react-router-dom';
 import styles from './ExpenseList.module.css';
 import { deleteExpense } from './expensesSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { toggleDarkMode } from './themeSlice';
+import Papa from 'papaparse';
+
 
 
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
   const dispatch = useDispatch();
   const showPremiumButton = useSelector((state) => state.expenses?.showPremiumButton);
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
   useEffect(() => {
     fetchExpenses();
@@ -48,7 +52,21 @@ const ExpenseList = () => {
       }
     } catch (error) {
       console.error('Error deleting expense:', error.message);
-    }
+    };
+  };
+const handleDownloadCSV = () => {
+  const csvData = Papa.unparse(expenses);
+  const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  if (link.download !== undefined) {
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'expenses.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   };
 
   return (
@@ -56,8 +74,12 @@ const ExpenseList = () => {
       <ExpenseForm onAddExpense={handleAddExpense} />
 
       <div>
+      <div className={darkMode ? styles.darkMode : ''}>
         <h2 className={styles.expenseList}>Expenses List</h2>
         {showPremiumButton && <button className={styles.activatePremium}>Activate Premium</button>}
+        <button onClick={() => dispatch(toggleDarkMode())}>Toggle Dark Mode</button>
+        <button onClick={handleDownloadCSV}>Download CSV</button> 
+
         <ul>
           {expenses.map((expense, index) => (
             <li key={index} className={styles.expenseItem}>
@@ -71,6 +93,7 @@ const ExpenseList = () => {
             </li>
           ))}
         </ul>
+      </div>
       </div>
     </div>
   );

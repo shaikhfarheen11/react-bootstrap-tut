@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ExpenseForm.module.css';
+import { useDispatch } from 'react-redux';
+import { addExpense } from './expensesSlice';
 
 const ExpenseForm = ({ onAddExpense }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
@@ -25,6 +28,7 @@ const ExpenseForm = ({ onAddExpense }) => {
 
       if (response.ok) {
         onAddExpense(newExpense);
+        dispatch(addExpense(newExpense));
 
         // setAmount('');
         // setDescription('');

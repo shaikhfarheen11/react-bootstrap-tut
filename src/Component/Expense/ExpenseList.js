@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import ExpenseForm from './ExpenseForm';
 import { Link } from 'react-router-dom';
 import styles from './ExpenseList.module.css';
+import { deleteExpense } from './expensesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
+  const dispatch = useDispatch();
+  const showPremiumButton = useSelector((state) => state.expenses?.showPremiumButton);
 
   useEffect(() => {
     fetchExpenses();
@@ -37,6 +42,7 @@ const ExpenseList = () => {
       if (response.ok) {
         console.log('Expense successfully deleted');
         setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== id));
+        dispatch(deleteExpense(id)); 
       } else {
         console.error('Failed to delete expense. Server response:', response.statusText);
       }
@@ -51,6 +57,7 @@ const ExpenseList = () => {
 
       <div>
         <h2 className={styles.expenseList}>Expenses List</h2>
+        {showPremiumButton && <button className={styles.activatePremium}>Activate Premium</button>}
         <ul>
           {expenses.map((expense, index) => (
             <li key={index} className={styles.expenseItem}>

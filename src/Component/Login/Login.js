@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useDispatch } from 'react-redux'; 
 import classes from './Login.module.css';
+import { login } from './authSlice';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +11,8 @@ const Login = () => {
   const [loginError, setLoginError] = useState('');
   const [showPassword, setShowPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,7 +33,10 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const token = data.idToken; 
+        const token = data.idToken;
+        const userId = data.localId;
+
+        dispatch(login({ token, userId })); 
         
         console.log('User has successfully logged in. Token:', token);
         navigate('/welcome'); 

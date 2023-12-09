@@ -40,4 +40,10 @@
     font-weight: bold;
     border-radius: 0.4rem;
   }
+  .activatePremium{
+    background-color: aqua;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.5rem 0.5rem;
+  }
   

@@ -6,6 +6,7 @@
   
   .expenseItem {
     font-weight: normal; 
+
   }
   
   .expenseItem.added {
@@ -46,4 +47,9 @@
     font-weight: bold;
     padding: 0.5rem 0.5rem;
   }
-  
+  .darkMode {
+    background-color: black;
+    color: white;
+
+    
+  }

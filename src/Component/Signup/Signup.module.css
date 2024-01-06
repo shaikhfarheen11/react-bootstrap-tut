@@ -9,6 +9,9 @@
   margin-top: 9rem;
   font-size: 1.3rem;
   height: 500px;
+  background: linear-gradient(to bottom right, #4f32f3, #16d2eb);
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .signupContainer h2 {
@@ -40,7 +43,7 @@
 .signupContainer button {
   width: 100%;
   padding: 12px; 
-  background-color: #3498db;
+  background-color: #5c25c2;
   color: white;
   border: none;
   border-radius: 4px;

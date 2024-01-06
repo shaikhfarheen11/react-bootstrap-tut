@@ -10,6 +10,9 @@
 
   font-size: 1.3rem;
   height: 500px;
+  background: linear-gradient(to bottom right, #745ae7, #e9a1e9);   
+
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .signupContainer h2 {
@@ -57,7 +60,7 @@
   
   .eyeIcon {
     position: absolute;
-    top: 47%;
+    top: 48%;
     right: 48rem; 
     transform: translateY(-50%);
      cursor: pointer;

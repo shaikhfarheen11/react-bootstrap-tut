@@ -1,7 +1,8 @@
 
 .expenseList {
     font-size: 2rem !important;
-    color: #333;
+
+    color: #585858;
   }
   
   .expenseItem {
@@ -42,8 +43,11 @@
     border-radius: 0.4rem;
   }
   .activatePremium{
-    background-color: aqua;
+    background-color: rgb(40, 255, 255);
     cursor: pointer;
+    margin-left: 1.2rem;
+border-radius: 0.8rem;
+    color: black;
     font-weight: bold;
     padding: 0.5rem 0.5rem;
   }

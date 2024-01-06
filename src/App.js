@@ -10,8 +10,8 @@ import { AuthContextProvider } from './Component/AuthContext/AuthContext';
 import ForgotPassword from './Component/ForgotPassword/ForgotPassword';
 import ExpenseForm from './Component/Expense/ExpenseForm';
 import ExpenseList from './Component/Expense/ExpenseList';
-import VerifyEmail from './Component/Expense/verifyEmail';
 import ExpenseEdit from './Component/Expense/ExpenseEdit';
+import LogoutConfirmation from './Component/LogoutPage/LogoutConfirmation';
 
 function App() {
   return (
@@ -24,9 +24,9 @@ function App() {
           <Route path="/welcome" element={<WelcomeScreen />} />
           <Route path="/winning-qoute" element={<WinningQuote />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/logout-confirmation" element={<LogoutConfirmation />} />
           <Route path="/expense-form" element={<ExpenseForm />} />
           <Route path="/welcome" element={<ExpenseList />} />
-          <Route path="/varification" element={<VerifyEmail />} />
           <Route path="/edit-expense/:id" element={<ExpenseEdit />} />
         </Routes>
       </BrowserRouter>

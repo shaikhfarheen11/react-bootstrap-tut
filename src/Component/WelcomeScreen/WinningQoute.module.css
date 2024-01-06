@@ -32,6 +32,9 @@
   margin-left: 46rem;
   margin-top: 2rem;
 }
+.cancel:hover{
+  background-color: #aaa9a9;
+}
 
 .verifyEmail{
   background-color: rgb(218, 95, 95);

@@ -1,22 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
 import Switch from 'react-switch';
 import classes from './Welcome.module.css';
 import ExpenseList from '../Expense/ExpenseList';
 import { toggleDarkMode } from '../Expense/themeSlice';
+import { logout } from '../Login/authSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faFileCsv, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import Papa from 'papaparse';
+import Login from '../Login/Login';
 import { getAuth, signOut } from 'firebase/auth';
 
-const WelcomeScreen = () => {
-  const storedDarkMode = localStorage.getItem('darkMode') === 'true';
-  const [expenses, setExpenses] = useState([]);
-  const [darkMode, setDarkMode] = useState(storedDarkMode);
-  const navigate = useNavigate();
+const themeReducer = (state, action) => {
+  switch (action.type) {
+    case 'TOGGLE_DARK_MODE':
+      return { ...state, darkMode: !state.darkMode };
+    default:
+      return state;
+  }
+};
 
-  const dispatch = useDispatch();
+const WelcomeScreen = () => {
+  const idToken = useSelector((state) => state.auth.token);
+  const [state, dispatch] = useReducer(themeReducer, {
+    darkMode: localStorage.getItem('darkMode') === 'true',
+  });
+
+  const { darkMode } = state;
+  const [expenses, setExpenses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const dispatchRedux = useDispatch();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
+    localStorage.setItem('isAuthenticated', 'true');
+    if (!isAuthenticated) {
+      navigate('/login');
+    } else {
+      setLoading(false);
+    }
+  }, [navigate]);
 
   useEffect(() => {
     document.documentElement.style.backgroundColor = darkMode ? 'black' : 'white';
@@ -42,79 +72,130 @@ const WelcomeScreen = () => {
   }, []);
 
   const handleToggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', String(newDarkMode));
-    dispatch(toggleDarkMode());
+    dispatch({ type: 'TOGGLE_DARK_MODE' });
+    localStorage.setItem('darkMode', String(!darkMode));
+    dispatchRedux(toggleDarkMode());
   };
 
   const handleDownloadCSV = () => {
-    const csvData = Papa.unparse(expenses);
-    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', 'expenses.csv');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    try {
+      if (expenses.length === 0) {
+        console.warn('No expenses to download.');
+        return;
+      }
+
+      const csvData = Papa.unparse(expenses);
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'expenses.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.error('Error during CSV download:', error);
     }
   };
 
   const handleLogout = () => {
     const shouldLogout = window.confirm('Are you sure you want to logout?');
-  
     if (shouldLogout) {
       const auth = getAuth();
       try {
-        signOut(auth);
-        navigate('/login');
-        console.log('User logged out successfully');
+        signOut(auth)
+          .then(() => {
+            dispatchRedux(logout());
+            localStorage.removeItem('isAuthenticated');
+            navigate('/login');
+            console.log('User logged out successfully');
+          })
+          .catch((error) => {
+            console.error('Error during sign out:', error);
+          });
       } catch (error) {
         console.error('Error logging out:', error.message);
       }
     }
   };
+  const verifyEmailHandler = async () => {
+    const url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY";
+    alert("Please Check your Email");
+    try {
+      const response = await axios.post(url, {
+        requestType: "VERIFY_EMAIL",
+        idToken: idToken,
+      });
+
+      if (response.status === 200) {
+        console.log(response);
+      } else {
+        console.log("Email not sent");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(false);
+    if (isAuthenticated) {
+      navigate('/welcome');
+    } else {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+  
   return (
-    <div className={classes.welcomeContainer}>
-      <div className={classes.toggleButtonContainer}>
-        <Switch
-          onChange={handleToggleDarkMode}
-          checked={darkMode}
-          handleDiameter={24}
-          onColor="#1a1a1a"
-          offColor="white"
-          uncheckedIcon={false}
-          checkedIcon={false}
-          height={20}
-          width={40}
-          className={darkMode ? classes.darkSwitch : classes.lightSwitch}
-        />
-        <span className={darkMode ? classes.darkText : classes.lightText}>
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
-        </span>
-        <button onClick={handleDownloadCSV} className={classes.download}>
-          <FontAwesomeIcon icon={faDownload} />
-          <FontAwesomeIcon className={classes.csvData} icon={faFileCsv} />
+    <>
+      {loading ? (
+        <p>Loading...</p>
+      ) : isAuthenticated ? (
+        <div className={classes.welcomeContainer}>
+          <div className={classes.toggleButtonContainer}>
+            <Switch
+              onChange={handleToggleDarkMode}
+              checked={darkMode}
+              handleDiameter={24}
+              onColor="#fff"
+              offColor="#1a1a1a"
+              uncheckedIcon={false}
+              checkedIcon={false}
+              height={20}
+              width={40}
+              className={`${darkMode ? classes.darkSwitch : classes.lightSwitch}`}
+            />
+            <span className={`${darkMode ? classes.darkText : classes.lightText} ${classes.toggleButtonText}`}>
+              {darkMode ? 'Light Mode' : 'Dark Mode'}
+            </span>
+            <button onClick={handleDownloadCSV} className={classes.download}>
+              <FontAwesomeIcon icon={faDownload} />
+              <FontAwesomeIcon className={classes.csvData} icon={faFileCsv} />
+            </button>
+            <button className={classes.logout} onClick={handleLogout} >Logout</button>
+          </div>
+          <h2>Welcome to Expense Tracker!!!</h2>
+          <div className={classes.incompleteYour}>
+            <p>
+              <span>Your Profile is incomplete </span>
+              <span className={classes.completeNow}>
+                <Link to="/winning-qoute">Complete now</Link>
+              </span>
+            </p>
+          </div>
+          <hr />
+          <button className={classes.linkButton} onClick={verifyEmailHandler}>
+          Verify Email
         </button>
-        <button onClick={handleLogout} className={classes.logout}>
-          <FontAwesomeIcon icon={faSignOutAlt} />
-          Logout
-        </button>
-      </div>
-      <h2>Welcome to Expense Tracker!!!</h2>
-      <div className={classes.incompleteYour}>
-        <p>
-          <span>Your Profile is incomplete </span>
-          <span className={classes.completeNow}>
-            <Link to="/winning-qoute">Complete now</Link>
-          </span>
-        </p>
-      </div>
-      <hr />
-      <ExpenseList expenses={expenses} />
-    </div>
+          <ExpenseList expenses={expenses} />
+        </div>
+      ) : (
+        <Login />
+      )}
+    </>
   );
 };
 

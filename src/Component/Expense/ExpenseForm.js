@@ -65,6 +65,7 @@ const ExpenseForm = ({ onAddExpense }) => {
             id="amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
+           
           />
         </div>
         <div>
@@ -94,6 +95,7 @@ const ExpenseForm = ({ onAddExpense }) => {
             <option value="food">Food</option>
             <option value="petrol">Petrol</option>
             <option value="salary">Salary</option>
+            <option value="t-shirts">T-Shirts</option>
           </select>
         </div>
         <button className={styles.button} type="submit">

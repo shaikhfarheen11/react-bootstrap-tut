@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaGithub, FaGlobe } from 'react-icons/fa';
-// import { getDatabase, ref, push, set } from 'firebase/database';
+import { getDatabase, ref, push, set } from 'firebase/database';
 import { initializeApp } from 'firebase/app';  
-import { getAuth, sendEmailVerification } from 'firebase/auth';
-import VerifyEmail from '../Expense/verifyEmail';
-
-
+import { getAuth } from 'firebase/auth';
 import classes from './WinningQoute.module.css';
 
 
@@ -20,6 +17,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const WinningQuote = () => {
   const [fullName, setFullName] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
+  const Navigate = useNavigate();
 
   useEffect(() => {
     
@@ -30,19 +28,17 @@ const WinningQuote = () => {
     try {
     
         console.log('Before fetch');
-        const auth = getAuth(firebaseApp);
-        const user = auth.currentUser;
-        console.log('User:', user);
-        
-        if (!user) {
-          console.error('User not authenticated.');
-          return;
-        }
-        
+      const auth = getAuth(firebaseApp);
+      const user = auth.currentUser;
+  
+      if (!user) {
+     
+        return;
+      }
   
       const idToken = await user.getIdToken();
   
-      const identityToolkitEndpoint =  `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY`;
+      const identityToolkitEndpoint = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY&idToken=${idToken}`;
 
   
       const identityToolkitResponse = await fetch(identityToolkitEndpoint, {
@@ -60,8 +56,8 @@ const WinningQuote = () => {
         const { users } = userData;
   
         if (users && users.length > 0) {
+
           const { displayName, photoUrl } = users[0];
-  
           setFullName(displayName || '');
           setProfilePhoto(photoUrl || '');
         } else {
@@ -78,30 +74,40 @@ const WinningQuote = () => {
   
   const handleUpdate = async () => {
     try {
-      const auth = getAuth(firebaseApp);
-      const user = auth.currentUser;
-  
-      console.log('Current User:', user);
-  
-      if (!user) {
-        console.error('User not authenticated.');
+      if (!fullName || !profilePhoto) {
+        console.log('Full name and profile photo URL are required.');
         return;
       }
-  
-      // Force token refresh
-      const refreshedUser = await user.getIdTokenResult(true);
-      const idToken = refreshedUser.token;
-  
-      // Log the ID token
-      console.log('ID Token:', idToken);
-  
-      // Verify the refreshed token
-      const tokenInfo = await auth.verifyIdToken(idToken);
-      console.log('Token expiration time:', tokenInfo.exp);
-  
-      // Continue with profile update
-      const identityToolkitEndpoint = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY`;
-  
+
+      const db = getDatabase(firebaseApp);
+      const dbRef = ref(db, 'winningQuotes');
+
+      const data = {
+        fullName: fullName,
+        profilePhoto: profilePhoto,
+      };
+
+      const newRef = push(dbRef);
+      const userKey = newRef.key;
+
+      await set(ref(db, `winningQuotes/${userKey}`), data);
+
+      console.log('User details updated in the Realtime Database successfully!');
+
+      const auth = getAuth(firebaseApp);
+      const user = auth.currentUser;
+      console.log('Current user:', user);
+
+
+      if (!user) {
+        return;
+      }
+
+      const idToken = await user.getIdToken();
+
+      const identityToolkitEndpoint = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=
+      AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY`;
+
       const identityToolkitResponse = await fetch(identityToolkitEndpoint, {
         method: 'POST',
         headers: {
@@ -113,28 +119,20 @@ const WinningQuote = () => {
           idToken: idToken,
         }),
       });
-  
+
       if (identityToolkitResponse.ok) {
         console.log('Identity toolkit update successful!');
-  
-        // Send verification email using Firebase method
-        await sendEmailVerification(user);
-  
-        console.log('Verification email sent successfully. Check your email and click on the link to verify.');
       } else {
-        console.error('Failed to update with identity toolkit:', identityToolkitResponse.statusText);
+        console.error('Failed to update with identity toolkit');
       }
-  
+
       setFullName('');
       setProfilePhoto('');
     } catch (error) {
       console.error('Error occurred:', error);
     }
   };
-  
-  
-  
-  
+
   const handleNameChange = (event) => {
     setFullName(event.target.value);
   };
@@ -142,6 +140,9 @@ const WinningQuote = () => {
   const handlePhotoChange = (event) => {
     setProfilePhoto(event.target.value);
   };
+  const handleCancel = () => {
+    Navigate('/welcome');
+  }
 
   return (
     <div>
@@ -155,7 +156,7 @@ const WinningQuote = () => {
       <hr />
 
       <span className={classes.contactDetails}>Contact Details</span>
-      <button className={classes.cancel}>Cancel</button>
+      <button className={classes.cancel} onClick={handleCancel}>Cancel</button>
       <div className={classes.inputFields}>
         <FaGithub className={classes.gitHubIcon} />
         Full Name:
@@ -176,13 +177,7 @@ const WinningQuote = () => {
           onChange={handlePhotoChange}
         />
       </div>
-
-      {/* Display the VerifyEmail component next to the Update button */}
-      <VerifyEmail />
-
-      <button className={classes.update} onClick={handleUpdate}>
-        Update
-      </button>
+      <button className={classes.update} onClick={handleUpdate}>Update</button>
       <hr className={classes.updateLine} />
     </div>
   );

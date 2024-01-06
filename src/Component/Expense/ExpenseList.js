@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import ExpenseForm from './ExpenseForm';
 import { Link } from 'react-router-dom';
 import styles from './ExpenseList.module.css';
-import { deleteExpense } from './expensesSlice';
+import { deleteExpense, setPremiumButton } from './expensesSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCrown } from '@fortawesome/free-solid-svg-icons';
+import ExpenseForm from './ExpenseForm';
 
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
@@ -15,13 +14,24 @@ const ExpenseList = () => {
   const darkMode = useSelector((state) => state.theme.darkMode);
 
   useEffect(() => {
+    // Load showPremiumButton state from local storage during component initialization
+    const savedShowPremiumButton = JSON.parse(localStorage.getItem('showPremiumButton'));
+    if (savedShowPremiumButton !== null) {
+      dispatch(setPremiumButton(savedShowPremiumButton));
+    }
+
     fetchExpenses();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    
     document.body.classList.toggle('darkMode', darkMode);
   }, [darkMode]);
+
+  useEffect(() => {
+    // Save the showPremiumButton state to local storage
+    localStorage.setItem('showPremiumButton', JSON.stringify(showPremiumButton));
+  }, [showPremiumButton, dispatch]);
+
   const fetchExpenses = async () => {
     try {
       const response = await fetch('https://react-hp-325a3-default-rtdb.firebaseio.com/expenses.json');
@@ -49,15 +59,20 @@ const ExpenseList = () => {
       if (response.ok) {
         console.log('Expense successfully deleted');
         setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== id));
-        dispatch(deleteExpense(id)); 
+        dispatch(deleteExpense(id));
       } else {
         console.error('Failed to delete expense. Server response:', response.statusText);
       }
     } catch (error) {
       console.error('Error deleting expense:', error.message);
-    };
+    }
   };
- 
+
+  const handleActivatePremium = () => {
+    // Dispatch an action to set premium button
+    dispatch(setPremiumButton(true));
+  };
+
   return (
     <div>
       <ExpenseForm onAddExpense={handleAddExpense} />
@@ -65,15 +80,22 @@ const ExpenseList = () => {
       <div>
         <div className={darkMode ? styles.darkMode : ''}>
           <h2 className={styles.expenseList}>Expenses List</h2>
-          {showPremiumButton && <button className={styles.activatePremium}>Activate Premium</button>}
-         
+          {showPremiumButton && (
+            <button className={styles.activatePremium} onClick={handleActivatePremium}>
+              <FontAwesomeIcon icon={faCrown} style={{ marginRight: '8px' }} />
+              Activate Premium
+            </button>
+          )}
+
           <ul>
             {expenses.map((expense, index) => (
               <li key={index} className={styles.expenseItem}>
                 <span className={styles.amount}>{expense.amount}</span> -
                 <span className={styles.description}> {expense.description}</span>
                 <span className={styles.category}>({expense.category})</span>
-                <button className={styles.delete} onClick={() => handleDeleteExpense(expense.id)}>Delete</button>
+                <button className={styles.delete} onClick={() => handleDeleteExpense(expense.id)}>
+                  Delete
+                </button>
                 <Link to={`/edit-expense/${expense.id}`}>
                   <button className={styles.edit}>Edit</button>
                 </Link>

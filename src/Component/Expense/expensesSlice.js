@@ -27,8 +27,11 @@ const expensesSlice = createSlice({
 
       state.showPremiumButton = state.totalAmount > 10000;
     },
+    setPremiumButton(state, action) {
+      state.showPremiumButton = action.payload;
+    },
   },
 });
 
-export const { addExpense, deleteExpense } = expensesSlice.actions;
+export const { addExpense, deleteExpense, setPremiumButton } = expensesSlice.actions;
 export default expensesSlice.reducer;

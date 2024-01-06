@@ -1,12 +1,22 @@
+// AuthContext.js
 
-import { createContext, useContext, useState } from 'react';
-import { getAuth } from 'firebase/auth';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+    });
+
+    // Cleanup the subscription when the component unmounts
+    return () => unsubscribe();
+  }, [auth]);
 
   const login = () => {
     setIsLoggedIn(true);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classes from './Welcome.module.css';
+import ExpenseList from '../Expense/ExpenseList';
 
 
 
@@ -33,6 +34,7 @@ const WelcomeScreen = () => {
             </p>
           </div>
           <hr/>
+          <ExpenseList />
         </div>
 
       )}

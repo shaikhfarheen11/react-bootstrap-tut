@@ -9,8 +9,8 @@
   margin-top: 9rem;
   font-size: 1.3rem;
   height: 500px;
-  background: linear-gradient(to bottom right, #4f32f3, #16d2eb);
-  color: white;
+  /* background: linear-gradient(to bottom right, #4f32f3, #16d2eb); */
+  color: rgb(0, 0, 0);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 

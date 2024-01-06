@@ -2,17 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGithub, FaGlobe } from 'react-icons/fa';
 import { getDatabase, ref, push, set } from 'firebase/database';
-import { initializeApp } from 'firebase/app';  
+import firebaseApp from '../firebaseConfig';
 import { getAuth } from 'firebase/auth';
 import classes from './WinningQoute.module.css';
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY",
-  databaseURL: 'https://react-hp-325a3-default-rtdb.firebaseio.com/',
-};
-
-const firebaseApp = initializeApp(firebaseConfig);
 
 const WinningQuote = () => {
   const [fullName, setFullName] = useState('');
@@ -79,7 +73,7 @@ const WinningQuote = () => {
         return;
       }
 
-      const db = getDatabase(firebaseApp);
+      const db = getDatabase();
       const dbRef = ref(db, 'winningQuotes');
 
       const data = {

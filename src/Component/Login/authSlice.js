@@ -4,7 +4,7 @@ const initialAuthState = {
   isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
   token: localStorage.getItem('authToken') || null,
   userId: localStorage.getItem('userId') || null,
-  loginError: null, // Add a loginError field to the state
+  loginError: null, 
 };
 
 const authSlice = createSlice({
@@ -15,16 +15,16 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.token = action.payload.token;
       state.userId = action.payload.userId;
-      state.loginError = null; // Reset loginError on successful login
+      state.loginError = null; 
     },
     logout(state) {
       state.isAuthenticated = false;
       state.token = null;
       state.userId = null;
-      state.loginError = null; // Reset loginError on logout
+      state.loginError = null; 
     },
     setLoginError(state, action) {
-      state.loginError = action.payload; // Set loginError
+      state.loginError = action.payload; 
     },
   },
 });

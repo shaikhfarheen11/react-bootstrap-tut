@@ -11,6 +11,7 @@ import WinningQuote from './Component/WelcomeScreen/WinningQoute';
 import ForgotPassword from './Component/ForgotPassword/ForgotPassword';
 import ExpenseForm from './Component/Expense/ExpenseForm';
 import ExpenseList from './Component/Expense/ExpenseList';
+import ExpenseEdit from './Component/Expense/ExpenseEdit';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/expense-form" element={<ExpenseForm />} />
           <Route path="/welcome" element={<ExpenseList />} />
+          <Route path="/edit-expense/:id" element={<ExpenseEdit />} />
 
 
 

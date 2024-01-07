@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ExpenseForm.module.css';
 
+
 const ExpenseForm = ({ onAddExpense }) => {
   const navigate = useNavigate();
   const [amount, setAmount] = useState('');
@@ -30,7 +31,7 @@ const ExpenseForm = ({ onAddExpense }) => {
         // setDescription('');
         // setCategory('');
         // setSelectedCategoryStyle({});
-        
+
         navigate('/welcome');
       } else {
         console.error('Failed to add expense. Server response:', response.statusText);

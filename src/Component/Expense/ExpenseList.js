@@ -11,6 +11,8 @@ const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
   const dispatch = useDispatch();
   const showPremiumButton = useSelector((state) => state.expenses?.showPremiumButton);
+  const darkMode = useSelector((state) => state.theme.darkMode);
+
 
   useEffect(() => {
 
@@ -21,6 +23,10 @@ const ExpenseList = () => {
 
     fetchExpenses();
   }, [dispatch]);
+
+  useEffect(() => {
+    document.body.classList.toggle('darkMode', darkMode);
+  }, [darkMode]);
 
   useEffect(() => {
   localStorage.setItem('showPremiumButton', JSON.stringify(showPremiumButton));

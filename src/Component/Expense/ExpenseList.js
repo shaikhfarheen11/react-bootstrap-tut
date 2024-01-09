@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {deleteExpense, setPremiumButton } from './expensesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCrown } from '@fortawesome/free-solid-svg-icons';
 import styles from './ExpenseList.module.css';
-
 import ExpenseForm from './ExpenseForm';
 
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
+  const dispatch = useDispatch();
+  const showPremiumButton = useSelector((state) => state.expenses?.showPremiumButton);
 
   useEffect(() => {
-    fetchExpenses();
-  }, []);
 
-  const handleAddExpense = (newExpense) => {
-    setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
-  };
+    const savedShowPremiumButton = JSON.parse(localStorage.getItem('showPremiumButton'));
+    if (savedShowPremiumButton !== null) {
+      dispatch(setPremiumButton(savedShowPremiumButton));
+    }
+
+    fetchExpenses();
+  }, [dispatch]);
+
+  useEffect(() => {
+  localStorage.setItem('showPremiumButton', JSON.stringify(showPremiumButton));
+  }, [showPremiumButton, dispatch]);
 
   const fetchExpenses = async () => {
     try {
@@ -29,6 +40,11 @@ const ExpenseList = () => {
     }
   };
 
+  const handleAddExpense = (newExpense) => {
+    setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+  };
+
+ 
   const handleDeleteExpense = async (id) => {
     try {
       const response = await fetch(`https://react-hp-325a3-default-rtdb.firebaseio.com/expenses/${id}.json`, {
@@ -38,6 +54,7 @@ const ExpenseList = () => {
       if (response.ok) {
         console.log('Expense successfully deleted');
         setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== id));
+        dispatch(deleteExpense(id));
       } else {
         console.error('Failed to delete expense. Server response:', response.statusText);
       }
@@ -46,11 +63,21 @@ const ExpenseList = () => {
     }
   };
 
+  const handleActivatePremium = () => {
+    dispatch(setPremiumButton(true));
+  };
+
   return (
     <div>
       <ExpenseForm onAddExpense={handleAddExpense} />
       <div>
         <h2 className={styles.expenseList}>Expenses List</h2>
+        {showPremiumButton && (
+            <button className={styles.activatePremium} onClick={handleActivatePremium}>
+              <FontAwesomeIcon icon={faCrown} style={{ marginRight: '8px' }} />
+              Activate Premium
+            </button>
+          )}
 
         <ul>
           {expenses.map((expense, index) => (

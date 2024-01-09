@@ -1,4 +1,3 @@
-// AuthContext.js
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -14,7 +13,6 @@ export const AuthContextProvider = ({ children }) => {
       setIsLoggedIn(!!user);
     });
 
-    // Cleanup the subscription when the component unmounts
     return () => unsubscribe();
   }, [auth]);
 

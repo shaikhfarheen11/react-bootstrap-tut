@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ExpenseForm.module.css';
-
+import { useDispatch } from 'react-redux';
+import { addExpense } from './expensesSlice';
 
 const ExpenseForm = ({ onAddExpense }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [selectedCategoryStyle, setSelectedCategoryStyle] = useState({});
 
-
   const handleExpenseSubmit = async (event) => {
     event.preventDefault();
-  
+
     const newExpense = { amount, description, category };
-  
+
     try {
       const response = await fetch('https://react-hp-325a3-default-rtdb.firebaseio.com/expenses.json', {
         method: 'POST',
@@ -24,14 +25,16 @@ const ExpenseForm = ({ onAddExpense }) => {
         },
         body: JSON.stringify(newExpense),
       });
-  
-      if (response.status === 200) {
+
+      if (response.ok) {
         onAddExpense(newExpense);
+        dispatch(addExpense(newExpense));
+
         // setAmount('');
         // setDescription('');
         // setCategory('');
         // setSelectedCategoryStyle({});
-
+        
         navigate('/welcome');
       } else {
         console.error('Failed to add expense. Server response:', response.statusText);
@@ -40,7 +43,6 @@ const ExpenseForm = ({ onAddExpense }) => {
       console.error('Error adding expense:', error.message);
     }
   };
-  
 
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
@@ -63,6 +65,7 @@ const ExpenseForm = ({ onAddExpense }) => {
             id="amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
+           
           />
         </div>
         <div>

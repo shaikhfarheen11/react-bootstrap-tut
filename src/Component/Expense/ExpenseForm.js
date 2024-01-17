@@ -11,6 +11,7 @@ const ExpenseForm = ({ onAddExpense }) => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [selectedCategoryStyle, setSelectedCategoryStyle] = useState({});
+  
 
   const handleExpenseSubmit = async (event) => {
     event.preventDefault();

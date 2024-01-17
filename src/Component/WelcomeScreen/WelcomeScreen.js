@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
 import Switch from 'react-switch';
 import classes from './Welcome.module.css';
 import ExpenseList from '../Expense/ExpenseList';
@@ -12,8 +13,6 @@ import Papa from 'papaparse';
 import Login from '../Login/Login';
 import { getAuth, signOut } from 'firebase/auth';
 
-
-
 const themeReducer = (state, action) => {
   switch (action.type) {
     case 'TOGGLE_DARK_MODE':
@@ -24,6 +23,7 @@ const themeReducer = (state, action) => {
 };
 
 const WelcomeScreen = () => {
+  const idToken = useSelector((state) => state.auth.token);
   const [state, dispatch] = useReducer(themeReducer, {
     darkMode: localStorage.getItem('darkMode') === 'true',
   });
@@ -120,6 +120,25 @@ const WelcomeScreen = () => {
       }
     }
   };
+  const verifyEmailHandler = async () => {
+    const url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA-iWDwN9qvPkZ_6bXOw88OOJf6Y5asiwY";
+    alert("Please Check your Email");
+    try {
+      const response = await axios.post(url, {
+        requestType: "VERIFY_EMAIL",
+        idToken: idToken,
+      });
+
+      if (response.status === 200) {
+        console.log(response);
+      } else {
+        console.log("Email not sent");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     setLoading(false);
@@ -168,6 +187,9 @@ const WelcomeScreen = () => {
             </p>
           </div>
           <hr />
+          <button className={classes.linkButton} onClick={verifyEmailHandler}>
+          Verify Email
+        </button>
           <ExpenseList expenses={expenses} />
         </div>
       ) : (

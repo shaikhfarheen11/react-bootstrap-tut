@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import classes from './Product.module.css';
 import { useCart } from '../Cart/CartContext';
 
+
 const CartBadge = ({ cartItems, onClose, onPlaceOrder }) => {
   const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
 

@@ -9,6 +9,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false); 
   const navigate = useNavigate();
+  
   const handleSignup = async (e) => {
     e.preventDefault();
   

@@ -1,11 +1,8 @@
-
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Signup from './Component/Signup/Signup';
 import Login from './Component/Login/Login';
 import WelcomeScreen from './Component/WelcomeScreen/WelcomeScreen';
-
 import { AuthContextProvider } from './Component/AuthContext/AuthContext';
 import WinningQuote from './Component/WelcomeScreen/WinningQoute';
 import ForgotPassword from './Component/ForgotPassword/ForgotPassword';
@@ -28,12 +25,7 @@ function App() {
           <Route path="/expense-form" element={<ExpenseForm />} />
           <Route path="/welcome" element={<ExpenseList />} />
           <Route path="/edit-expense/:id" element={<ExpenseEdit />} />
-
-
-
-    
-    
-        </Routes>
+ </Routes>
       </BrowserRouter>
     </AuthContextProvider>
   );

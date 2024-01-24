@@ -78,6 +78,7 @@ const ExpenseEdit = ({ id }) => {
             value={category}
             onChange={handleCategoryChange}
             style={selectedCategoryStyle}
+            id="category"
           >
             <option value="">Select Category</option>
             {categories.map((cat) => (

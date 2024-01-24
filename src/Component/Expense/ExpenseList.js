@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import {deleteExpense, setPremiumButton } from './expensesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCrown } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import styles from './ExpenseList.module.css';
 import ExpenseForm from './ExpenseForm';
+
+
 
 const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
@@ -80,8 +82,8 @@ const ExpenseList = () => {
         <h2 className={styles.expenseList}>Expenses List</h2>
         {showPremiumButton && (
             <button className={styles.activatePremium} onClick={handleActivatePremium}>
-              <FontAwesomeIcon icon={faCrown} style={{ marginRight: '8px' }} />
-              Activate Premium
+              <FontAwesomeIcon icon={faStar} style={{ marginRight: '8px' }} />
+              Premium
             </button>
           )}
 

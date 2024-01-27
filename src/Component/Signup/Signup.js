@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import classes from './Signup.module.css';
 
+
+
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,6 +12,8 @@ const Signup = () => {
   const [signupSuccess, setSignupSuccess] = useState(false); 
   const navigate = useNavigate();
   
+
+
   const handleSignup = async (e) => {
     e.preventDefault();
   
@@ -65,8 +69,11 @@ const Signup = () => {
   };
 
   return (
+    
     <div className={classes.signupContainer}>
+      
       <h2>SignUp</h2>
+  
       {signupSuccess && <p className={classes.successMessage}>Signed up successfully!</p>}
       <form onSubmit={handleSignup}>
 
@@ -92,6 +99,7 @@ const Signup = () => {
       </form>
       <p>
         Have an account? <Link to="/login">Login</Link>
+       
       </p>
     </div>
   );

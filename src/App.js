@@ -8,11 +8,15 @@ import WinningQuote from './Component/WelcomeScreen/WinningQoute';
 import ForgotPassword from './Component/ForgotPassword/ForgotPassword';
 import ExpenseForm from './Component/Expense/ExpenseForm';
 import ExpenseList from './Component/Expense/ExpenseList';
+import backgroundImg from './Component/Signup/background.jpg';
 import ExpenseEdit from './Component/Expense/ExpenseEdit';
+import './App.css';
 
 
 function App() {
+  <div className="App" style={{ backgroundImage: `url(${backgroundImg})` }}></div>
   return (
+    
     <AuthContextProvider>
       <BrowserRouter>
         <Routes>
@@ -24,7 +28,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/expense-form" element={<ExpenseForm />} />
           <Route path="/welcome" element={<ExpenseList />} />
-          <Route path="/edit-expense/:id" element={<ExpenseEdit />} />
+          <Route path="/edit-expense/:id" element={<ExpenseEdit />} />Learn React
  </Routes>
       </BrowserRouter>
     </AuthContextProvider>

@@ -12,9 +12,7 @@ describe('themeSlice', () => {
     });
   });
 
- 
-
-  test('should handle multiple toggle actions', () => {
+ test('should handle multiple toggle actions', () => {
     store.dispatch(toggleDarkMode());
     store.dispatch(toggleDarkMode());
    

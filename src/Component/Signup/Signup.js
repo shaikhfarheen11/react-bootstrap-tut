@@ -13,7 +13,6 @@ const Signup = () => {
   const navigate = useNavigate();
   
 
-
   const handleSignup = async (e) => {
     e.preventDefault();
   
@@ -77,22 +76,33 @@ const Signup = () => {
       {signupSuccess && <p className={classes.successMessage}>Signed up successfully!</p>}
       <form onSubmit={handleSignup}>
 
+    <div>
+      <label htmlFor="email">Email:</label>
+    <input
+    id="email"
+    type="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+</div>
         <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <label htmlFor="password">Password:</label>
+  <input
+    id="password"
+    type="password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
         </div>
         <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            className={passwordError ? classes.error : ''}
-          />
+        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+          className={passwordError ? classes.error : ''}
+        />
         </div>
         {passwordError && <p className={classes.errorMessage}>Passwords do not match!</p>}
         <button type='submit' className={classes.submit}>Sign Up</button>

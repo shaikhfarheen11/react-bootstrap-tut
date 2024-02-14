@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ExpenseForm.module.css';
 import { useDispatch } from 'react-redux';
-import { addExpense } from './expensesSlice';
-
-
+import { addExpense } from './expensesSlice'
 
 const ExpenseForm = ({ onAddExpense }) => {
   const dispatch = useDispatch();
@@ -13,10 +11,15 @@ const ExpenseForm = ({ onAddExpense }) => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [selectedCategoryStyle, setSelectedCategoryStyle] = useState({});
-  
+  const [error, setError] = useState(null);
 
   const handleExpenseSubmit = async (event) => {
     event.preventDefault();
+
+    if (!amount || !description || !category) {
+      setError('Please fill in all fields');
+      return;
+    }
 
     const newExpense = { amount, description, category };
 
@@ -32,24 +35,19 @@ const ExpenseForm = ({ onAddExpense }) => {
       if (response.ok) {
         onAddExpense(newExpense);
         dispatch(addExpense(newExpense));
-
-        // setAmount('');
-        // setDescription('');
-        // setCategory('');
-        // setSelectedCategoryStyle({});
-        
         navigate('/welcome');
       } else {
-        console.error('Failed to add expense. Server response:', response.statusText);
+        throw new Error(`Failed to add expense. Server response: ${response.statusText}`);
       }
     } catch (error) {
-      console.error('Error adding expense:', error.message);
+      setError(error.message);
     }
   };
 
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
     setCategory(selectedCategory);
+
     const borderStyle = selectedCategory ? { border: '2px solid green' } : {};
     setSelectedCategoryStyle(borderStyle);
   };
@@ -68,7 +66,6 @@ const ExpenseForm = ({ onAddExpense }) => {
             id="amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-           
           />
         </div>
         <div>
@@ -101,6 +98,7 @@ const ExpenseForm = ({ onAddExpense }) => {
             <option value="t-shirts">T-Shirts</option>
           </select>
         </div>
+        {error && <div className={styles.error}>{error}</div>}
         <button className={styles.button} type="submit">
           Add Expense
         </button>

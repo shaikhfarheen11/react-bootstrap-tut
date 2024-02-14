@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useDispatch } from 'react-redux'; 
 import classes from './Login.module.css';
 import { login } from './authSlice';
 
-
-
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const [showPassword, setShowPassword] = useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [loginError, setLoginError] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -57,14 +54,20 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className={classes.passwordContainer}>
-          <label>Password:</label>
+          <label htmlFor="password">Password:</label>
           <div className={classes.passwordInput}>
             <input
               type={showPassword ? 'text' : 'password'}
+              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

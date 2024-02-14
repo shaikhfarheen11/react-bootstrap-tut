@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './ExpenseEdit.module.css';
 
+
+
 const ExpenseEdit = ({ id }) => {
   const navigate = useNavigate();
   const [amount, setAmount] = useState('');
@@ -52,42 +54,32 @@ const ExpenseEdit = ({ id }) => {
     <div className={styles.container}>
       <h2>Edit Expense</h2>
       <form onSubmit={handleEditSubmit}>
-        <div className={styles.formGroup}>
-          <label>Amount:</label>
-          <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} style={{ width: '93%', 
-          padding: '8px', 
-          fontSize: '16px',
-           border: '1px solid #111010', 
-           borderRadius: '4px' }}
-            />
+      <div className={styles.formGroup}>
+  <label htmlFor="amount">Amount:</label>
+  <input id="amount" type="text" value={amount} onChange={(e) => setAmount(e.target.value)} style={{ width: '93%', padding: '8px', fontSize: '16px', border: '1px solid #111010', borderRadius: '4px' }} />
+</div>
+<div className={styles.formGroup}>
+  <label htmlFor="description">Description:</label>
+  <input id="description" type="text" value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '93%', padding: '8px', fontSize: '16px', border: '1px solid #111010', borderRadius: '4px' }} />
+</div>
+<div className={styles.formGroup}>
+  <label htmlFor="category">Category:</label>
+  <select
+    className={styles.selectField}
+    value={category}
+    onChange={handleCategoryChange}
+    style={selectedCategoryStyle}
+    id="category"
+  >
+    <option value="">Select Category</option>
+    {categories.map((cat) => (
+      <option key={cat} value={cat}>
+        {cat}
+      </option>
+    ))}
+  </select>
+</div>
 
-        </div>
-        <div className={styles.formGroup}>
-          <label>Description:</label>
-          <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '93%', 
-          padding: '8px',
-           fontSize: '16px',
-            border: '1px solid #111010',
-             borderRadius: '4px' }}
-             />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Category:</label>
-          <select
-            className={styles.selectField}
-            value={category}
-            onChange={handleCategoryChange}
-            style={selectedCategoryStyle}
-            id="category"
-          >
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
         <button type="submit" >Submit</button>
       </form>
     </div>

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import themeReducer, { toggleDarkMode, selectDarkMode } from './themeSlice';
+import themeReducer, { toggleDarkMode } from './themeSlice';
 
 describe('themeSlice', () => {
   let store;
